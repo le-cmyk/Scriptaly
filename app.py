@@ -85,12 +85,27 @@ with col_3:
 st.code(creation_code(), language='python')
 
 #Links
-col_1,col_2=st.columns([3,0.8])
-with col_1:
-    st.button("WebApp", url="https://scriptaly.streamlit.app/")
 
+LIEN = {
+    "Léo Dujourd'hui": "https://leo-dujourd-hui-digital-cv.streamlit.app",
+}
+SOURCES ={
+    "Github": "https://github.com/le-cmyk/Scriptaly"
+}
+APP={
+    "WebApp": "https://scriptaly.streamlit.app/"
+}
+
+col_1,col_2=st.columns([2,2,0.8])
+with col_1:
+    for clé, link in SOURCES.items():
+        st.write(f"[{clé}]({link})")
 with col_2:
-    st.button("GitHub", url="https://github.com/le-cmyk/Scriptaly")
+    for clé, link in LIEN.items():
+        st.write(f"Made by : [{clé}]({link})")
+with col_3:
+    for clé, link in APP.items():
+        st.write(f"[{clé}]({link})")
 
 # ---- HIDE STREAMLIT STYLE ----
 hide_st_style = """
