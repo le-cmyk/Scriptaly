@@ -84,6 +84,13 @@ with col_3:
 
 st.code(creation_code(), language='python')
 
+#Links
+col_1,col_2=st.columns([3,0.8])
+with col_1:
+    st.button("WebApp", url="https://scriptaly.streamlit.app/")
+
+with col_2:
+    st.button("GitHub", url="https://github.com/le-cmyk/Scriptaly")
 
 # ---- HIDE STREAMLIT STYLE ----
 hide_st_style = """
