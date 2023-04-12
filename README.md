@@ -37,3 +37,6 @@ To generate the Python code used to modify the CSV file, scroll down to the bott
 - You can use the "Delete all the data stored in the cache" button to clear the cache.
 - The app hides Streamlit's default header, footer, and menu styles.
 
+# Link to the app
+
+```https://scriptaly.streamlit.app/```
