@@ -96,7 +96,7 @@ APP={
     "WebApp": "https://scriptaly.streamlit.app/"
 }
 
-col_1,col_2=st.columns([2,2,0.8])
+col_1,col_2,col_3=st.columns([2,2,0.8])
 with col_1:
     for clé, link in SOURCES.items():
         st.write(f"[{clé}]({link})")
