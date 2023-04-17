@@ -4,14 +4,18 @@ import io
 def Visualisation_dataframe():
 
     """
-    Display the DataFrame in an expander and also reset the visualisation with a button
-
+    Display all DataFrame in an expander
     """
     with st.expander("Visualisation data"):
 
-        #if st.session_state.reset_visualisation :
-        st.write(st.session_state.cache_data)
-        st.session_state.reset_visualisation=False
+        tab1, tab2 = st.tabs(["🗃 Data source", "🗃 Data prediction"])
+
+        tab1.write(st.session_state.cache_data)
+
+        col1,col2=tab2.columns([0.2,1])
+
+        col1.write(st.session_state.target)
+        col2.write(st.session_state.data_modificated)
 
         
 

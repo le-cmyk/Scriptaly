@@ -9,7 +9,7 @@ from file_code.load import Load_dataframe
 from file_code.download import download_final_file,creation_code
 from file_code.type_replace import Type_Replace
 from file_code.visualisations import Visualisation_dataframe,Visualisation_dataframe_type,refresh_page
-
+from file_code.part_modificate.change import part_preparation_data_set
 
 # emojis: https://www.webfx.com/tools/emoji-cheat-sheet/ 
 st.set_page_config(page_title="Scriptaly", page_icon="⚒", layout="wide")
@@ -24,6 +24,10 @@ if "print" not in st.session_state:
 
 if "cache_data" not in st.session_state:
     st.session_state.cache_data = []
+if "data_modificated" not in st.session_state:
+    st.session_state.data_modificated=pd.DataFrame()
+if "target" not in st.session_state:
+    st.session_state.target=pd.DataFrame()
 
 # Top of the page
 col_1,col_2=st.columns([3,0.8])
@@ -48,8 +52,14 @@ Visualisation_dataframe()
 # Create a button to show the DataFrame information in the sidebar
 Visualisation_dataframe_type()
 
+st.markdown("""---""")
+
 #Change type and replace part
 Type_Replace()
+
+st.markdown("""---""")
+
+part_preparation_data_set()
 
 st.markdown("""---""")
 
