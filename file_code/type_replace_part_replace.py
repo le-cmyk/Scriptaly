@@ -12,7 +12,9 @@ def findandreplace(data,filter_column,number_visu):
     st.dataframe(pd.DataFrame(visualisation.unique()[:number_visu],columns=[filter_column]))
     
     if st.button("Save the code",key =2):
-
+        
+        if "Modifications" not in st.session_state.print.keys():
+                st.session_state.print["Modifications"]={}
         # To find the correct name of the column 
         i=1
         while f"{filter_column}_{i}" in st.session_state.print["Modifications"].keys():

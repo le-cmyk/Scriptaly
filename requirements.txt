@@ -1,4 +1,8 @@
 chardet
+matplotlib
+numpy
 pandas
 python_dateutil
+scikit_learn
+seaborn
 streamlit

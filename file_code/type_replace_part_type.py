@@ -23,11 +23,7 @@ def change_type(data,filter_column):
         None.
     """
 
-    # To find the correct name of the column 
-    i=1
-    while f"{filter_column}_{i}" in st.session_state.print["Modifications"].keys():
-        i+=1
-    filter_name=f"{filter_column}_{i}"
+    
     filter_code=""
 
     # Get the selected column and display its information
@@ -59,6 +55,15 @@ def change_type(data,filter_column):
 
         # Save the modification
         if st.button("Save the code",key =1):
+            if "Modifications" not in st.session_state.print.keys():
+                st.session_state.print["Modifications"]={}
+
+            # To find the correct name of the column 
+            i=1
+            while f"{filter_column}_{i}" in st.session_state.print["Modifications"].keys():
+                i+=1
+            filter_name=f"{filter_column}_{i}"
+            
             if {"code":filter_code,"type":"Type"} not in st.session_state.print["Modifications"].values():
                 st.session_state.print["Modifications"][filter_name]={"code":filter_code,"type":"Type"}
                 st.session_state.cache_data[filter_column] = converted_column

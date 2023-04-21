@@ -16,12 +16,13 @@ st.set_page_config(page_title="Scriptaly", page_icon="⚒", layout="wide")
 path="data.csv"
 
 
-if "print" not in st.session_state:
-    st.session_state.print = {
-        "load":"",
-        "Modifications":{}
-    }
 
+def initiation_print():
+    st.session_state.print = {
+
+    }
+if "print" not in st.session_state:
+    initiation_print()
 if "cache_data" not in st.session_state:
     st.session_state.cache_data = []
 if "data_modificated" not in st.session_state:
@@ -74,10 +75,7 @@ with col_2:
 
     # Ajouter un bouton pour effacer toutes les données préenregistrées
     if st.button("Delate all the data stored in the cache"):
-        st.session_state.print = {
-            "load":"",
-            "Modifications":{}
-        }
+        initiation_print()
         st.session_state.cache_data=pd.DataFrame()
         st.success("All the data were earase succesfully")
 

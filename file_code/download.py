@@ -19,13 +19,21 @@ def creation_code():
 import pandas as pd
 """
 
+    for key in st.session_state.print.keys():
+        if key=='Modifications':
+            code+="\n\n"+"#Modifications"+"\n"
+            for key2, value in st.session_state.print[key].items():
+                colonne,number_modification=key2.rsplit("_", 1)
+                code+="\n"+f"## {colonne} modification {number_modification} : {value['type']}"
+                code+="\n"+f"{value['code']}"
+        else:
+            code+="\n\n"+f"#{key} section"
+            if type(st.session_state.print[key])==str:
+                code+="\n"+st.session_state.print[key]
+            elif type(st.session_state.print[key])==dict:
+                for key2, value in st.session_state.print[key].items():
+                    code+="\n"+f"## {key2}"
+                    code+="\n"+f"{value}"
 
-    code+="\n"+"#Load section"
-    code+="\n"+st.session_state.print['load']
-    code+="\n\n"+"#Modifications"+"\n"
-
-    for key, value in st.session_state.print['Modifications'].items():
-        colonne,number_modification=key.rsplit("_", 1)
-        code+="\n"+f"## {colonne} modification {number_modification} : {value['type']}"
-        code+="\n"+f"{value['code']}"
+    
     return code
