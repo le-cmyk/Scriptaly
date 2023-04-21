@@ -79,25 +79,22 @@ def launch_PCA(variance_explained,data):
     data.fillna(data.mean(), inplace=True)
     pca = PCA()
     pca.fit(data)
-
-    nb_components = np.argmax(variance_explained > 0.95) + 1
+    variance_cumsum = np.cumsum(pca.explained_variance_ratio_)
+    nb_components = np.argmax(variance_cumsum > variance_explained) + 1
 
     df_loadings = pd.DataFrame(pca.components_[:nb_components, :], columns=data.columns, index=[f'PC{i}' for i in range(1, nb_components+1)])
 
-    # Liste des composantes à garder
-    components_to_keep = list(range(1, nb_components+1))
-
-
-
     # Trouver le nombre de composantes principales à garder
     variance_cumsum = np.cumsum(pca.explained_variance_ratio_)
+
     fig = plt.figure(figsize=(12, 8))
-    plt.axvline(x=np.argmax(variance_cumsum > 0.95)+1, color='red', linestyle='--')
-    plt.text(np.argmax(variance_cumsum > 0.95)+1, 0.9, '95% seuil', rotation=90, va='top', ha='center', color='red')
+    plt.plot(range(1, len(pca.explained_variance_ratio_)+1), pca.explained_variance_ratio_, marker='o')
+    plt.xlabel('Composante Principale')
+    plt.ylabel('Variance expliquée (%)')
+    plt.title('Scree Plot')
+    plt.axvline(x=np.argmax(variance_cumsum > variance_explained)+1, color='red', linestyle='--',label=f'{variance_explained}% seuil')
+    plt.legend()
     st.pyplot(fig)
-
-
-    st.write("Composantes principales à garder pour une variance expliquée de 95% :", components_to_keep)
 
     # Affichage des chargements des variables sur les composantes principales sous forme de matrice de chaleur avec Seaborn
     fig = plt.figure(figsize=(12, 8))
@@ -106,6 +103,9 @@ def launch_PCA(variance_explained,data):
     plt.ylabel('Variable')
     plt.title(f'Chargements des variables sur les {nb_components} premières composantes principales')
     st.pyplot(fig)
+    if st.button("Diplay dataframe explanation"):
+        st.write(df_loadings)
+
 
 
 def part_preparation_data_set():
