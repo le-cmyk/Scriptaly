@@ -1,8 +1,7 @@
 chardet
-matplotlib
 numpy
 pandas
+plotly
 python_dateutil
 scikit_learn
-seaborn
 streamlit
