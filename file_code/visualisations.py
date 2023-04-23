@@ -15,7 +15,7 @@ def Visualisation_dataframe():
         col1,col2=tab2.columns([0.2,1])
 
         col1.write(st.session_state.target)
-        col2.write(st.session_state.data_modificated)
+        col2.write(st.session_state.df_pca)
 
         
 

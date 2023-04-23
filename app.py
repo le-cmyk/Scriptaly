@@ -25,10 +25,11 @@ if "print" not in st.session_state:
     initiation_print()
 if "cache_data" not in st.session_state:
     st.session_state.cache_data = []
-if "data_modificated" not in st.session_state:
-    st.session_state.data_modificated=pd.DataFrame()
+if "df_pca" not in st.session_state:
+    st.session_state.df_pca=pd.DataFrame()
 if "target" not in st.session_state:
     st.session_state.target=pd.DataFrame()
+
 
 # Top of the page
 col_1,col_2=st.columns([3,0.8])
@@ -64,7 +65,7 @@ part_preparation_data_set()
 
 st.markdown("""---""")
 
-col_1,col_2,col_3=st.columns([0.9,1.3,1])
+col_1,col_2,col_3=st.columns([1,1.5,0.6])
 
 with col_1:
 
