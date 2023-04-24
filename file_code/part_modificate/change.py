@@ -208,7 +208,7 @@ def part_preparation_data_set():
         variance_ratios = pca.explained_variance_ratio_
         variance_cumulative = np.cumsum(variance_ratios)
         n_components = np.argmax(variance_cumulative >= variance_explained) + 1
-        st.write(n_components)
+        
         st.session_state.df_pca=df_pca.iloc[:,:n_components]
         visualisation_pca(variance_explained,data_modificated.columns,pca)
 

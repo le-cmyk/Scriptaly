@@ -10,6 +10,7 @@ from file_code.download import download_final_file,creation_code
 from file_code.type_replace import Type_Replace
 from file_code.visualisations import Visualisation_dataframe,Visualisation_dataframe_type,refresh_page
 from file_code.part_modificate.change import part_preparation_data_set
+from file_code.column_work.part_columns import stats_on_columns
 
 # emojis: https://www.webfx.com/tools/emoji-cheat-sheet/ 
 st.set_page_config(page_title="Scriptaly", page_icon="⚒", layout="wide")
@@ -58,6 +59,11 @@ st.markdown("""---""")
 
 #Change type and replace part
 Type_Replace()
+
+st.markdown("""---""")
+
+#stats on columns
+stats_on_columns()
 
 st.markdown("""---""")
 
