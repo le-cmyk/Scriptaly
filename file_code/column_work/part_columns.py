@@ -1,35 +1,48 @@
 import streamlit as st
 import plotly.graph_objects as go
-import pandas as pd
+
+from file_code.general_functions import get_function_source_code,add_new_code_section,add_new_session_state_element
 
 def stats_on_columns():
-    with st.expander("Multiple columns"):
+    with st.expander("Select columns to slice"):
         df=st.session_state.cache_data
         # Create a list of column names with NaN as an option
-        columns = ['NaN'] + list(df.columns)
+        columns = list(df.columns)
 
         # Create a checkbox for each column in the dataframe
-        selected_columns = st.multiselect('Select columns', columns, default=['NaN'], key='columns')
+        selected_columns = st.multiselect('Select columns to slice', columns, default=[],label_visibility="collapsed")
         
         # Filter the dataframe based on the selected columns
-        if 'NaN' not in selected_columns:
+        if 0!= len(selected_columns):
             filtered_df = df[selected_columns]
 
 
             for column in selected_columns:
                 st.write("---")
                 df_filter=filtered_df[column]
+                previous_length=df_filter.shape[0]
 
                 col_1,col_2=st.columns([1,1])
                 with col_1:
                     affichage_histogram(df_filter,column,f"Before selection distribution of {column}")
-                df_filter=remove_outliers(df_filter)
+
+                slider_key="quartile"+column
+                add_new_session_state_element(slider_key,(0,0))
+                q_low,q_high=st.slider('Remove outliers', 0.0, 100.0, (5.0, 95.0),key=slider_key)
+                df_filter=remove_outliers(df_filter,q_low,q_high)
                 with col_2:
                     affichage_histogram(df_filter,column,f"After selection distribution of {column}")
 
-                if st.button("Apply changes"):        
-                    st.session_state.cache_data=filter_dataframe(st.session_state.cache_data,df_filter)
-                    st.write(st.session_state.cache_data.shape)
+                if st.button("Apply changes",key=column):
+                    add_new_code_section("Slice_column" ,{"function":   get_function_source_code(remove_outliers)+"\n"+
+                                                                        get_function_source_code(filter_dataframe)} )
+                    if column not in st.session_state.print["Slice_column"].keys():      
+                        st.session_state.cache_data=filter_dataframe(st.session_state.cache_data,df_filter)
+
+                        st.session_state.print["Slice_column"][column]=f"column_filter = remove_outliers(data['{column}'],{q_low},{q_high})"+"\n"+f"data = filter_dataframe(data,column_filter)"
+
+                        st.success(f"In total {previous_length-st.session_state.cache_data.shape[0]} lines where delated")
+                    
 
 def affichage_histogram(df,name,title):
     fig = go.Figure()
@@ -37,12 +50,35 @@ def affichage_histogram(df,name,title):
     fig.update_layout(title=title,width=400)
     st.plotly_chart(fig)
 
-def remove_outliers(df):
-    q_low,q_high = st.slider('Remove outliers', 0.0, 100.0, (5.0, 95.0))
-    q_low = df.quantile(q_low / 100)
-    q_high = df.quantile(q_high / 100)
-    df = df[(df > q_low) & (df < q_high)].dropna()
-    return df
+def remove_outliers(df, lower_quantile_threshold, upper_quantile_threshold):
+    """
+    This function removes the outliers in a pandas dataframe column by filtering out the values
+    that fall outside a specified range of quantiles.
+
+    Parameters:
+    -----------
+    df : pandas.DataFrame
+        The dataframe containing the column to filter
+    lower_quantile_threshold : float
+        The lower quantile threshold as a percentage, below which values will be filtered out
+    upper_quantile_threshold : float
+        The upper quantile threshold as a percentage, above which values will be filtered out
+
+    Returns:
+    --------
+    pandas.DataFrame
+        The filtered dataframe with the outliers removed
+    """
+
+    # Calculate the lower and upper quantile thresholds
+    lower_quantile_value = df.quantile(lower_quantile_threshold / 100)
+    upper_quantile_value = df.quantile(upper_quantile_threshold / 100)
+
+    # Filter the dataframe to keep only the values within the specified range of quantiles
+    filtered_df = df[(df > lower_quantile_value) & (df < upper_quantile_value)]
+
+    return filtered_df
+
 
 def filter_dataframe(df1, df2):
     """

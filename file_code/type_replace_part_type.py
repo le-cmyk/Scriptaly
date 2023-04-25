@@ -1,14 +1,9 @@
 import streamlit as st
 from dateutil.parser import parse
 import pandas as pd
-import inspect
 
-def get_function_source_code(function):
-    """
-    This function takes another function as a parameter and returns the source code of that function as a string.
-    """
-    source_code = inspect.getsource(function)
-    return source_code
+from file_code.general_functions import get_function_source_code
+
 
 
 def change_type(data,filter_column):

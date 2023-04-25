@@ -31,9 +31,16 @@ import pandas as pd
             if type(st.session_state.print[key])==str:
                 code+="\n"+st.session_state.print[key]
             elif type(st.session_state.print[key])==dict:
+                show_function=True
                 for key2, value in st.session_state.print[key].items():
-                    code+="\n"+f"## {key2}"
-                    code+="\n"+f"{value}"
+                    if key2!="function":
+                        code+="\n"+f"## {key2}"
+                        code+="\n"+f"{value}"
+
+                    elif show_function:
+                        show_function=False
+                        code+="\n"+f"## {key2}"
+                        code+="\n"+f"{value}"
 
     
     return code

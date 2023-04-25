@@ -14,7 +14,8 @@ def Type_Replace():
         col_1,col_2=st.columns([2.5,0.5])
         filter_column = col_1.selectbox(
                 "Select column to filter:",
-                [None]+columns_name
+                [None]+columns_name,
+                label_visibility="collapsed"
             )
         st.session_state.display_drop_na = col_2.button("Drop all na")
 
@@ -26,7 +27,6 @@ def Type_Replace():
 
             st.session_state.display_modifications = col_1.button("Modifications") != st.session_state.display_modifications
             st.session_state.display_delate_column = col_3.button("Delate column") 
-            st.session_state.display_delate_lines = col_2.button("Delate lines")
             
             if st.session_state.display_modifications:
                 st.write("---")
@@ -56,9 +56,7 @@ def Type_Replace():
                     st.session_state.cache_data = st.session_state.cache_data.drop(filter_column, axis=1)
                     st.session_state.print["Delation"][filter_column]=f"data = data.drop('{filter_column}', axis=1)"
                     st.success(f"Delation of the {filter_column} column done")
-            elif st.session_state.display_delate_lines:
-                
-                st.write("---")
+            
         elif st.session_state.display_drop_na:
             if "Drop all na" not in st.session_state.print.keys():
                 #Only if it's not already drop
